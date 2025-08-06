@@ -1,6 +1,9 @@
 package androidx.appcompat.chaquopydemo;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +11,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
+
 public class MainActivity extends AppCompatActivity {
+    private String tag = "demo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +27,27 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+        TextView textView = findViewById(R.id.textView);
+        if (!Python.isStarted()) {
+            Python.start(new AndroidPlatform(this));
+        }
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(v -> {
+            String python_platform = Python.getPlatform().toString();
+            Python py = Python.getInstance();
+
+            String sys_platform = py.getModule("sys").get("platform").toString();
+            String platform = py.getModule("platform").callAttr("platform").toString();
+            String system = py.getModule("platform").callAttr("system").toString();
+
+            String text = String.format("Python.getPlatform() = %s\n", python_platform) +
+                    String.format("sys.platform = %s\n", sys_platform) +
+                    String.format("platform.platform() = %s\n", platform) +
+                    String.format("platform.system() = %s\n", system);
+            Log.i(tag, text);
+
+            textView.setText(text);
         });
     }
 }

@@ -57,8 +57,17 @@ chaquopy {
             pip = true
             stdlib = true
         }
-        // buildPython("D:/Projects/ImageTextEditor/.venv/Scripts/python.exe")
-        version = "3.8"
+        pip {
+            // install("lxml")
+            // install("pillow")
+            // install("python-docx")
+            // install("python-pptx")
+            // install("fontTools")
+            // install("fire")
+        }
+        // buildPython("C:/Windows/py.exe", "-3.8")
+        // buildPython("D:\\Projects\\AndroidStudioProjects\\Chaquopydemo\\.venv\\Scripts\\python.exe")
+        // version = "3.11"
     }
 }
 
